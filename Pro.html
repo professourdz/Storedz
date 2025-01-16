@@ -1,0 +1,221 @@
+Pro
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دير لافار مع البروفيسور Dz</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+            direction: rtl;
+            text-align: right;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .product-grid div {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-grid img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">دير لافار مع البروفيسور Dz</div>
+        <nav>
+            <a href="#home">الرئيسية</a>
+            <a href="#products">المنتجات</a>
+            <a href="#add-product">إضافة منتج</a>
+            <a href="#cart">سلة المشتريات</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- صفحة الرئيسية -->
+        <section id="home">
+            <h1>مرحبًا بك في متجر "دير لافار مع البروفيسور Dz"</h1>
+            <p>أفضل المنتجات بأفضل الأسعار.</p>
+        </section>
+
+        <!-- المنتجات -->
+        <section id="products">
+            <h2>منتجاتنا</h2>
+            <div id="product-list" class="product-grid"></div>
+        </section>
+
+        <!-- إضافة منتج -->
+        <section id="add-product">
+            <h2>إضافة منتج جديد</h2>
+            <form id="addProductForm">
+                <label for="productName">اسم المنتج:</label>
+                <input type="text" id="productName" required>
+                <br><br>
+                <label for="productPrice">سعر المنتج:</label>
+                <input type="number" id="productPrice" required>
+                <br><br>
+                <label for="productImage">صورة المنتج:</label>
+                <input type="file" id="productImage" accept="image/*" required>
+                <br><br>
+                <button type="submit">إضافة المنتج</button>
+            </form>
+        </section>
+
+        <!-- سلة المشتريات -->
+        <section id="cart">
+            <h2>سلة المشتريات</h2>
+            <ul id="cartItems"></ul>
+            <p id="totalPrice">الإجمالي: 0 د.ج</p>
+            <button id="checkout">إتمام الشراء</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>حقوق الطبع © 2025 متجر "دير لافار مع البروفيسور Dz"</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const products = [
+                { id: 1, name: "منتج 1", price: 100, image: "https://via.placeholder.com/150" },
+                { id: 2, name: "منتج 2", price: 200, image: "https://via.placeholder.com/150" },
+                { id: 3, name: "منتج 3", price: 150, image: "https://via.placeholder.com/150" },
+            ];
+
+            const productList = document.getElementById("product-list");
+            const cartItems = document.getElementById("cartItems");
+            const totalPrice = document.getElementById("totalPrice");
+            const addProductForm = document.getElementById("addProductForm");
+            let cart = [];
+
+            // عرض المنتجات
+            function renderProducts() {
+                productList.innerHTML = "";
+                products.forEach((product) => {
+                    const productDiv = document.createElement("div");
+                    productDiv.innerHTML = `
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p>السعر: ${product.price} د.ج</p>
+                        <button onclick="addToCart(${product.id})">إضافة إلى السلة</button>
+                    `;
+                    productList.appendChild(productDiv);
+                });
+            }
+
+            renderProducts();
+
+            // إضافة منتج للسلة
+            window.addToCart = (id) => {
+                const product = products.find((p) => p.id === id);
+                cart.push(product);
+                renderCart();
+            };
+
+            // عرض السلة
+            function renderCart() {
+                cartItems.innerHTML = "";
+                let total = 0;
+                cart.forEach((product) => {
+                    const item = document.createElement("li");
+                    item.textContent = `${product.name} - ${product.price} د.ج`;
+                    cartItems.appendChild(item);
+                    total += product.price;
+                });
+                totalPrice.textContent = `الإجمالي: ${total} د.ج`;
+            }
+
+            // إضافة منتج جديد
+            addProductForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const name = document.getElementById("productName").value;
+                const price = parseFloat(document.getElementById("productPrice").value);
+                const imageFile = document.getElementById("productImage").files[0];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const newProduct = {
+                        id: products.length + 1,
+                        name: name,
+                        price: price,
+                        image: e.target.result,
+                    };
+                    products.push(newProduct);
+                    renderProducts();
+                    addProductForm.reset();
+                };
+
+                if (imageFile) {
+                    reader.readAsDataURL(imageFile);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
